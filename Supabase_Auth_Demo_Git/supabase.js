@@ -4,14 +4,38 @@ dotenv.config()
 
 const supabase = createClient(process.env.SUPABASE_DOMAIN, process.env.SUPABASE_PUBLIC_KEY)
 
-//read: foreign key example 
-async function getAllBooksAndAuthor() { 
-    const {data, error} = await supabase.from('books').select(`title, rating, authors(name)`)
+//getBooks() gets books from database
+
+async function getBooks() { 
+    const {data, error } = await supabase.from('books').select('*')
+    if (error) {
+        console.log(error)
+    } else {
+        return data
+    }
+}
+
+//Login() login with email and password
+
+async function login(email_, password_) {
+    const { data, error } = await supabase.auth.signInWithPassword({
+        email: email_, 
+        password: password_, 
+    })
+    if(error) {
+        console.log(error)
+    } else {
+        console.log(data)
+    }
+}
+
+//Logout() logout the user
+async function logout() {
+    const { error } = await supabase.auth.signOut()
     if(error) {
         console.log(error)
     } 
-    return data
 }
 
 //export the functions you want expressclient.js to use
-//module.exports = {}
+module.exports = {logout, getBooks, login}
