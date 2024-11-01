@@ -5,7 +5,7 @@ const path = require('path');
 
 app.use(express.urlencoded({ extended: true })); 
 
-//require supabase functions (not defined/implemented yet)
+//require supabase functions
 const {logout, login, getBooks} = require('./supabase')
 
 app.get('/', (req, res) => {
